@@ -1,0 +1,127 @@
+:root {
+    --accent: #14b8a6;
+    --accent-hover: #0d9488;
+    --bg: #f0f4f8;
+    --text: #333;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+}
+h1, h2 {
+    color: var(--accent);
+}
+
+section {
+    margin-top: 40px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+#projects {
+    margin-top: 40px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);  
+}
+
+.projects-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr
+    }
+}
+
+
+.project-card{
+    background: #f8fbff;
+    border: 1px solid #efeef8;
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+}
+
+.project-card h3 {
+    margin: 0 0 6px;
+    color: #0f3d63;
+}
+
+.project-card p {
+    margin: 0 0 8px;
+    color:#334155;
+}
+
+.project-card .tech {
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.project-card .links {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.project-card .links a {
+    text-decoration: none;
+    color: #007acc;
+    font-weight: 600;
+}
+
+.project-card .links a[aria-disabled="true"] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+
+#contact {
+    margin-top: 40px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);      
+    text-align: center;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.contact-links a {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6ps;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.contact-links a:hover {
+    background: var(--accent-hover);
+}
