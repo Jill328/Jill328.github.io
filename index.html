@@ -3,21 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Jill Woods  Web Developer | Frontend & Portfolio">
+    <meta name="author" content="Jill Woods">
+    <meta name="theme-color" content="#14b8a6">
+    <meta property="og:title" content="Jill Woods &middot; Web Developer">
+    <meta property="og:description" content="Projects, skills, and contact.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jillwoods328.github.io">
+    <meta property="og:image" content="https://jillwoods328.github.io/images/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <title>Document</title>
+    <link rel="canonical" href="https://jillwoods328.github.io">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Jill Woods &middot; Web Developer | Frontend & Portfolio</title>
 </head>
+
 <body>
-    <h1>Hello, I'm Jill Woods</h1>
-    <p>Welcome to my portfolio!</p>
-    <section id ="about">
+    <a class="skip" href="#main">Skip to content</a>
+    <main id="main">
+      <header>
+        <h1>Hello, I'm Jill Woods</h1>
+        <p>Welcome to my portfolio!</p>
+    </header>
+
+    <section id ="about" class="container">
         <h2>About Me</h2>
         <p>
             I'm a recent coding bootcamp graduate and a single mom making a career switch into tech. I love solving problems, building useful tools, and learning new things every day.</p>
             </section>
-    <section id="projects">
+
+    <section id="projects" class="container">
         <h2>Projects</h2>
         <div class="projects-grid">
             <article class="project-card">
@@ -25,17 +44,18 @@
                 <p>A short description of what this does and why it's useful.</p>
                 <p class="tech">Stack:HTML, CSS, JavaScript</p>
                 <div class="links">
-                    <a href="#" aria-disabled="true">Live (soon)</a>
+                    <a href="#" aria-disabled="true" aria-label="Live demo of Project One (coming soon)">Live (soon)</a>
                     <a href="#" aria-disabled="true">Code (soon)</a>
                 </div>
             </article>
+
             <article class="project-card">
                 <h3>Project Two</h3>
                 <p>Describe the problem it solves or your role.</p>
                 <p class="tech">Stack: React, Node</p>
                 <div class="links">
-                    <a href="#" aria-disabled="true">Live (soon)</a>
-                    <a href="#" aria-disabled="true">Code (soon)<a>
+                    <a href="#" aria-disabled="true" aria-label="Live demo of Project Two (coming soon)">Live (soon)</a>
+                    <a href="#" aria-disabled="true">Code (soon)</a>
                 </div>
             </article>
 
@@ -44,7 +64,7 @@
                 <p>Describe the problem it solves or your role.</p>
                 <p class="tech">Stack: TBD</p>
                 <div class="links">
-                    <a href="#" aria-disabled="true">Live (soon)</a>
+                    <a href="#" aria-disabled="true" aria-label="Live demo of Project Three (coming soon)">Live (soon)</a>
                     <a href="#" aria-disabled="true">Code (soon)</a>
                 </div>
             </article>
@@ -54,21 +74,26 @@
                 <p>Describe the problem it solves or your role.</p>
                 <p class="tech">Stack: TBD</p>
                 <div class="links">
-                    <a href="#" aria-disabled="true">Live (soon)</a>
+                    <a href="#" aria-disabled="true" aria-label="Live demo of Project Four (coming soon)">Live (soon)</a>
                     <a href="#" aria-disabled="true">Code (soon)</a>
                 </div>
             </article>
-            
         </div>
     </section>
-    <section id="contact">
+
+    <section id="contact" class="container">
         <h2>Contact</h2>
-        <p>Let's connect! I'm open to juinor developer roles, internships, or freelance projects.</p>
+        <p>Let's connect! I'm open to junior developer roles, internships, or freelance projects.</p>
         <div class="contact-links">
         <a href="mailto:jill.woods504@gmail.com"><i class="fa-solid fa-envelope"></i>Email</a>
-        <a href="https://www.linkedin.com/in/jill-woods-504/"><i class="fa-brands fa-linkedin"></i>LinkedIn</a>
-        <a href="https:github.com/Jill328"><i class="fa-brands fa-github"></i>GitHub</a>
+        <a href="https://www.linkedin.com/in/jill-woods-504/" target="_blank" rel="noopener noreferrer"> <i class="fa-brands fa-linkedin"></i>LinkedIn</a>
+        <a href="https://github.com/Jill328" target="_blank" rel="noopener noreferrer"> <i class="fa-brands fa-github"></i>GitHub</a>
         </div>
     </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Jill Woods</p>
+    </footer>
 </body>
 </html>
