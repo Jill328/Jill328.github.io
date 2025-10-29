@@ -1,0 +1,234 @@
+
+:root {
+  --bg: #f7fafc;
+  --fg: #0f172a;
+  --card: #ffffff;
+  --accent: #10b981;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background .6s, color .6s;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: max(12px, env(safe-area-inset-top))
+           max(16px, env(safe-area-inset-right))
+           max(16px, env(safe-area-inset-bottom))
+           max(16px, env(safe-area-inset-left));
+}
+
+h1 { margin: 0 0 16px; color: var(--accent); }
+
+#search-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+#search-form input[type="search"],
+#search-form input[type="text"],
+#search-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 16px; 
+  outline: none;
+  background: #fff;
+  color: var(--fg);
+}
+
+#search-form button {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+#search-form button:hover { filter: brightness(0.96); }
+#search-form button[disabled] { opacity: .6; cursor: not-allowed; }
+
+.unit-toggle, .switch {
+  justify-self: start;
+  grid-column: 1 / -1; 
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+
+.switch .track{
+  width:64px; height:28px; background:#e5e7eb; border-radius:999px; position:relative; transition:background .25s;
+  display:inline-block;
+}
+.switch input{ display:none; }
+.switch .thumb{
+  position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+  background:#fff; box-shadow:0 2px 6px rgba(0,0,0,.15);
+  font-size:12px; display:flex; align-items:center; justify-content:center; color:#6b7280; transition:transform .25s, color .25s;
+}
+.switch input:checked + .track{ background:#34d399; }
+.switch input:checked + .track .thumb{ transform: translateX(36px); color:#065f46; }
+.switch .switch-label{ font-size:.95rem; opacity:.85; }
+
+
+.weather-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+#weather-icon { font-size: 64px; color: var(--accent); }
+.weather-info h2 { margin: 0; font-size: clamp(18px, 4vw, 22px); }
+#temperature { margin: 4px 0; font-size: clamp(16px, 4vw, 20px); }
+#wind { display: inline-flex; align-items: center; gap: 6px; }
+#wind-icon { font-size: 28px; color: var(--accent); }
+
+
+#result:empty::before{
+  content:"Type a city and hit Get Weather";
+  display:block; padding:1rem; opacity:.7; font-style:italic;
+}
+
+.loading .weather-card{
+  position:relative; overflow:hidden;
+  background: linear-gradient(90deg,#f2f4f7 0%, #ffffff 50%, #f2f4f7 100%);
+  background-size:200% 100%; animation: shimmer 1.2s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+
+@keyframes float { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-4px) } }
+@keyframes spin { to { transform: rotate(360deg); } }
+#weather-icon { animation: float 4s ease-in-out infinite; }
+#wind-icon { animation: spin 8s linear infinite; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+
+.theme-sunny  { --bg: linear-gradient(180deg,#fff8d6,#ffe9a3); --card:#fffef6; --accent:#f59e0b; }
+.theme-cloudy { --bg: linear-gradient(180deg,#e9eef5,#cfd7e3); --card:#f4f6f9; --accent:#64748b; }
+.theme-rain   { --bg: linear-gradient(180deg,#d9ecff,#a8c5ff); --card:#f1f6ff; --accent:#3b82f6; }
+.theme-storm  { --bg: linear-gradient(180deg,#d7d7e2,#9aa0b2); --card:#eef0f6; --accent:#111827; }
+.theme-snow   { --bg: linear-gradient(180deg,#f6fbff,#e9f5ff); --card:#ffffff; --accent:#60a5fa; }
+.theme-fog    { --bg: linear-gradient(180deg,#eef2f4,#dfe5e8); --card:#f7f9fb; --accent:#6b7280; }
+
+.is-night .weather-card { box-shadow: 0 10px 35px rgba(0,0,0,.25); }
+.is-night.theme-sunny  { --bg: linear-gradient(180deg,#0b1220,#0f172a); --card:#0f172a; --fg:#e2e8f0; --accent:#fbbf24; }
+
+
+@media (min-width: 480px) {
+  #search-form { grid-template-columns: 1fr auto auto; }
+  .unit-toggle, .switch { grid-column: auto; margin-left: 8px; }
+  #weather-icon { font-size: 68px; }
+}
+@media (min-width: 768px) {
+  .weather-card { padding: 18px; gap: 16px; }
+  #weather-icon { font-size: 72px; }
+}
+
+/* ============ EMBED (compact) ============ */
+body.embed {
+  /* Make the iframe background blend with the parent card */
+  --bg: transparent;
+  background: transparent;
+}
+
+/* Tighter container and spacing */
+body.embed .container {
+  max-width: 420px;    /* smaller than standalone */
+  padding: 8px 10px;
+}
+
+/* Hide big page header */
+body.embed h1 { 
+  display: none; 
+}
+
+/* Form: smaller controls that fit in a card */
+body.embed #search-form { 
+  gap: 6px; 
+  margin-bottom: 8px; 
+}
+body.embed #search-form input[type="search"] {
+  min-height: 36px;
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+body.embed #search-form button {
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* Put the unit toggle on the same row and simplify the label */
+body.embed .unit-toggle {
+  grid-column: auto;
+  margin-left: 6px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Card: smaller type, softer shadow */
+body.embed .weather-card {
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  gap: 10px;
+}
+
+/* Icon + text sizes tuned for cards */
+body.embed #weather-icon { font-size: 40px; }
+body.embed .weather-info h2 { font-size: 1rem; }
+body.embed #temperature { font-size: 0.95rem; margin: 2px 0; }
+body.embed #wind-icon { font-size: 18px; }
+body.embed #wind { gap: 4px; }
+
+@media (prefers-reduced-motion:no-preference) {
+  body.embed #weather-icon { animation-duration: 6s; }
+  body.embed #wind-icon { animation-duration: 12s; }
+}
+
+
+body.embed #result:empty::before {
+  padding: .5rem;
+  font-size: .9rem;
+}
+
+body.embed.loading .weather-card {
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+
+body.embed.theme-sunny,
+body.embed.theme-cloudy,
+body.embed.theme-rain,
+body.embed.theme-storm,
+body.embed.theme-snow,
+body.embed.theme-fog { 
+  --bg: transparent;         /* don’t tint parent card */
+}

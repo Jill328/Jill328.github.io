@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Weather App</title>
+    <link 
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"
+      integrity="sha512-2sQsINqYQBi1ut4Mu9i84AjHmdPgso1SMb4hE+V8iz9GzVguDlJboLzpPrqzC0p2iAgsCv0eKaKAdOGN9rWwvw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      />
+    
+      <link
+     rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons-wind.min.css"
+     integrity="sha512-SH01x4hbnhM2N8RcD+QpD+8YUwW6dnM8nKzU3gLqTxvRS3tZmi7A+fKecbPuNw7uHLqRj0VGbXZ2PQVQh6nB8g=="
+     crossorigin="anonymous"
+     referrerpolicy="no-referrer"   
+     />
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main class="container">
+        <h1>Weather App</h1>
+        
+        <form id="search-form">
+            <input id="query" 
+                   type="search" 
+                   placeholder="Enter a city (e.g. New York City)" 
+                   spellcheck="false" 
+                   autocomplete="off" 
+                   inputmode="search" 
+                   enterkeyhint="search"
+            />
+            <button type="submit">Get Weather</button>
+            <label class="unit-toggle" style="margin-left:.75rem; font-size:.95rem;">
+            <input id="useF" type="checkbox" />
+
+            <span>Show °F / mph</span>
+        </label>
+            
+        </form>
+
+        <section id="result" aria-live="polite">
+            <div id="weather-display" class="weather-card">
+                <i id="weather-icon" class="wi"></i>
+                <div class="weather-info">
+                    <h2 id="city-name"></h2>
+                    <p id="temperature"></p>
+                    <div id="wind">
+                        <i id="wind-icon" class="wi wi-wind"></i>
+                        <span id="wind-speed"></span>
+                </div>
+            </div>
+        </section>
+    
+    </main>
+    <script>
+        (function () {
+        function sendHeight() {
+            const h = document.documentElement.scrollHeight;
+            parent.postMessage({ type: "weatherWidgetHeight", h }, "*");
+        }
+        window.addEventListener("load", sendHeight);
+        new ResizeObserver(sendHeight).observe(document.body);
+        })();
+    </script>
+    <script>
+    // If ?embed=1, switch to compact styling
+        (function () {
+        if (new URLSearchParams(location.search).get("embed") === "1") {
+        document.body.classList.add("embed");
+        }
+        })();
+    </script>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

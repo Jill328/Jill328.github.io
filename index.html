@@ -39,14 +39,25 @@
     <section id="projects" class="container">
         <h2>Projects</h2>
         <div class="projects-grid">
-            <article class="project-card">
-                <h3>Project One</h3>
-                <p>A short description of what this does and why it's useful.</p>
-                <p class="tech">Stack:HTML, CSS, JavaScript</p>
-                <div class="links">
-                    <a href="#" aria-disabled="true" aria-label="Live demo of Project One (coming soon)">Live (soon)</a>
-                    <a href="#" aria-disabled="true">Code (soon)</a>
+           <article class="project-card project-weather">
+             <h3>Weather App</h3>
+             <p>A simple, fast weather widget that uses the Open-Meteo API with custom icons, themes, and a °F/°C toggle.</p>
+                <div class="widget-frame">
+                    <iframe
+                    id="weather-iframe"
+                    src="weather-widget/index.html?embed=1"
+                    title="Weather widget"
+                    loading="lazy"
+                    allowtransparency="true"
+                    ></iframe>
                 </div>
+
+            <p class="tech">Stack: HTML, CSS, JavaScript, Open-Meteo API</p>
+            <div class="links">
+                <a href="weather-widget/index.html" target="_blank" rel="noopener noreferrer">Live</a>
+            <!-- Update this Code link once you push the folder to your repo -->
+            <a href="#" aria-disabled="true">Code (soon)</a>
+             </div>
             </article>
 
             <article class="project-card">
@@ -91,7 +102,15 @@
         </div>
     </section>
     </main>
-
+    <script>
+  // Listen for height messages from the weather-widget iframe
+    window.addEventListener("message", (e) => {
+    if (e?.data?.type === "weatherWidgetHeight") {
+      const f = document.getElementById("weather-iframe");
+      if (f) f.style.height = e.data.h + "px";
+    }
+  });
+    </script>
     <footer>
         <p>&copy; 2025 Jill Woods</p>
     </footer>

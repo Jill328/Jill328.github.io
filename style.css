@@ -164,3 +164,18 @@ button:focus-visible {
 }
 
 .container{max-width: 980px; margin: 0 auto; padding: 0 16px;}
+
+.project-weather .widget-frame {
+  margin: 12px 0 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.project-weather .widget-frame iframe {
+  width: 100%;
+  border: 0;
+  display: block;
+  min-height: 280px; /* safety fallback; JS will resize */
+}
