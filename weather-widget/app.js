@@ -1,6 +1,6 @@
 const form = document.getElementById("search-form");
 const input = document.getElementById("query");
-const useFEl = document.getElementById("useF");   
+const useFEl = document.getElementById("useF");
 const cityEl = document.getElementById("city-name");
 const tempEl = document.getElementById("temperature");
 const wxIconEl = document.getElementById("weather-icon");
@@ -8,119 +8,79 @@ const windIconEl = document.getElementById("wind-icon");
 const windSpeedEl = document.getElementById("wind-speed");
 const resultSection = document.getElementById("result");
 
-// Helpers
-
+// ---------------- Helpers ----------------
 const titleCase = (s) =>
   s.replace(/\s+/g, " ")
     .trim()
     .toLowerCase()
     .replace(/\b\w/g, (c) => c.toUpperCase());
 
-function setStatus(msg) {
-  let statusEl = document.getElementById("status-line");
-  if (!statusEl) {
-    statusEl = document.createElement("p");
-    statusEl.id = "status-line";
-    statusEl.style.marginTop = "0.5rem";
-    statusEl.style.opacity = "0.8";
-    resultSection.appendChild(statusEl);
+function setStatus(msg, isError = false) {
+  let el = document.getElementById("status-line");
+  if (!el) {
+    el = document.createElement("p");
+    el.id = "status-line";
+    resultSection.appendChild(el);
   }
-  statusEl.textContent = msg || "";
+  el.textContent = msg || "";
+  el.classList.toggle("error", !!isError);
 }
 
 // Map Open-Meteo weather codes → Erik Flowers Weather Icons classes
 const WEATHER_ICON_MAP = {
-  0:  "wi-day-sunny",
-  1:  "wi-day-sunny-overcast",
-  2:  "wi-cloud",
-  3:  "wi-cloudy",
-  45: "wi-fog",
-  48: "wi-fog",
-  51: "wi-sprinkle",
-  53: "wi-sprinkle",
-  55: "wi-sprinkle",
-  56: "wi-rain-mix",
-  57: "wi-rain-mix",
-  61: "wi-showers",
-  63: "wi-rain",
-  65: "wi-rain",
-  66: "wi-rain-mix",
-  67: "wi-rain-mix",
-  71: "wi-snow",
-  73: "wi-snow",
-  75: "wi-snow",
-  77: "wi-snowflake-cold",
-  80: "wi-showers",
-  81: "wi-showers",
-  82: "wi-showers",
-  85: "wi-snow-wind",
-  86: "wi-snow-wind",
-  95: "wi-thunderstorm",
-  96: "wi-storm-showers",
-  99: "wi-storm-showers"
+  0:"wi-day-sunny",1:"wi-day-sunny-overcast",2:"wi-cloud",3:"wi-cloudy",
+  45:"wi-fog",48:"wi-fog",
+  51:"wi-sprinkle",53:"wi-sprinkle",55:"wi-sprinkle",
+  56:"wi-rain-mix",57:"wi-rain-mix",
+  61:"wi-showers",63:"wi-rain",65:"wi-rain",
+  66:"wi-rain-mix",67:"wi-rain-mix",
+  71:"wi-snow",73:"wi-snow",75:"wi-snow",77:"wi-snowflake-cold",
+  80:"wi-showers",81:"wi-showers",82:"wi-showers",
+  85:"wi-snow-wind",86:"wi-snow-wind",
+  95:"wi-thunderstorm",96:"wi-storm-showers",99:"wi-storm-showers"
 };
 const iconForWeatherCode = (code) => WEATHER_ICON_MAP[code] || "wi-na";
 
 async function geocodeCity(city) {
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-    city
-  )}&count=1&language=en&format=json`;
-
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Geocoding failed (${res.status})`);
   const data = await res.json();
-  if (!data.results || data.results.length === 0)
-    throw new Error("No results for that city.");
-
+  if (!data.results || data.results.length === 0) throw new Error("No results for that city.");
   const { latitude, longitude, name, country, admin1 } = data.results[0];
   return { lat: latitude, lon: longitude, label: [name, admin1, country].filter(Boolean).join(", ") };
 }
 
 async function fetchCurrentWeather(lat, lon, units) {
-  const url =
-    `https://api.open-meteo.com/v1/forecast` +
-    `?latitude=${lat}&longitude=${lon}` +
-    `&current_weather=true` +
-    `&temperature_unit=${units.temp}` +
-    `&windspeed_unit=${units.wind}` +
-    `&timezone=auto`;
-
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=${units.temp}&windspeed_unit=${units.wind}&timezone=auto`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Weather fetch failed (${res.status})`);
   const data = await res.json();
   if (!data.current_weather) throw new Error("No current weather in response.");
-  return data.current_weather; // { temperature, windspeed, winddirection, weathercode, is_day, ... }
+  return data.current_weather;
 }
-
 
 function renderWeather(cityLabel, cw, units) {
   const tUnit = units.temp === "fahrenheit" ? "°F" : "°C";
   const wUnit = units.wind === "mph" ? "mph" : "km/h";
 
-  // City + temperature
   cityEl.textContent = cityLabel;
   tempEl.textContent = `${Math.round(cw.temperature)}${tUnit}`;
 
-  // Icon
   const iconClass = iconForWeatherCode(cw.weathercode);
   wxIconEl.className = `wi ${iconClass}`;
 
-  // Wind 
   const deg = Math.round(Number(cw.winddirection) || 0);
   windIconEl.className = `wi wi-wind towards-${deg}-deg`;
   windSpeedEl.textContent = `${Math.round(cw.windspeed)} ${wUnit}`;
 
-
   applyTheme(cw.weathercode, cw.is_day);
-
-  setStatus(`Updated ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`);
+  setStatus(`Updated ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`);
 }
 
 function applyTheme(code, isDay) {
   const body = document.body;
-  body.classList.remove(
-    "theme-sunny","theme-cloudy","theme-rain","theme-storm","theme-snow","theme-fog","is-night"
-  );
+  body.classList.remove("theme-sunny","theme-cloudy","theme-rain","theme-storm","theme-snow","theme-fog","is-night");
 
   let theme = "theme-cloudy";
   if ([0,1,2].includes(code)) theme = "theme-sunny";
@@ -133,38 +93,90 @@ function applyTheme(code, isDay) {
   if (isDay === 0) body.classList.add("is-night");
 }
 
-
 function setLoading(on) {
   document.getElementById("result")?.classList.toggle("loading", !!on);
 }
-
 
 useFEl?.addEventListener("change", () => {
   const thumb = document.querySelector(".switch .thumb");
   if (thumb) thumb.textContent = useFEl.checked ? "°F" : "°C";
 });
 
-//Events
+// --------------- GEOLOCATION HELPERS ---------------
+// MOVED/NEW: keep helpers outside listeners so they’re defined once.
+function getCurrentPositionAsync(options = {}) {
+  return new Promise((resolve, reject) => {
+    if (!("geolocation" in navigator)) {
+      reject(new Error("Geolocation is not supported in this browser."));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}
+
+async function reverseGeocode(lat, lon) {
+  const url = `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1&language=en&format=json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Reverse geocoding failed (${res.status})`);
+  const data = await res.json();
+  if (!data.results || data.results.length === 0) return `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+  const { name, admin1, country } = data.results[0];
+  return [name, admin1, country].filter(Boolean).join(", ");
+}
+
+// --------------- EVENTS ---------------
+
+document.getElementById("useLocationBtn")?.addEventListener("click", async () => {
+  const units = useFEl && useFEl.checked
+    ? { temp: "fahrenheit", wind: "mph" }
+    : { temp: "celsius",    wind: "kmh" };
+
+  setStatus("Getting your location…");
+  setLoading(true);
+
+  try {
+    const pos = await getCurrentPositionAsync({
+      enableHighAccuracy: false,
+      timeout: 8000,
+      maximumAge: 300000
+    });
+
+    const { latitude: lat, longitude: lon } = pos.coords;
+    const label = await reverseGeocode(lat, lon);
+    const cw = await fetchCurrentWeather(lat, lon, units);
+    renderWeather(label, cw, units);
+    input.value = label;
+  } catch (err) {
+    console.error(err);
+    const msg =
+      err?.code === 1 ? "Location permission denied. Type a city instead." :
+      err?.code === 2 ? "Position unavailable. Try again or type a city." :
+      err?.code === 3 ? "Location request timed out. Try again or type a city." :
+      (err?.message || "Couldn't get your location. Type a city instead.");
+    setStatus(msg, true);
+  } finally {
+    setLoading(false);
+  }
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const raw = input.value || "";
   const city = titleCase(raw);
   if (!city) {
-    setStatus("Please enter a city (e.g., Dallas).");
+    setStatus("Please enter a city (e.g., New Orleans).");
     input.focus();
     return;
   }
 
-  // Determine units based on checkbox
   const units = useFEl && useFEl.checked
     ? { temp: "fahrenheit", wind: "mph" }
     : { temp: "celsius",    wind: "kmh" };
 
-  // Button state + loading shimmer
   const prevBtnText = e.submitter ? e.submitter.textContent : null;
   if (e.submitter) e.submitter.textContent = "Loading…";
   setStatus("Looking up location…");
-  setLoading(true);             
+  setLoading(true);
 
   try {
     const { lat, lon, label } = await geocodeCity(city);
@@ -173,10 +185,10 @@ form.addEventListener("submit", async (e) => {
     renderWeather(label, cw, units);
   } catch (err) {
     console.error(err);
-    setStatus(err.message || "Something went wrong. Please try again.");
+    setStatus(err.message || "Something went wrong. Please try again.", true);
   } finally {
     if (e.submitter && prevBtnText !== null) e.submitter.textContent = prevBtnText;
-    setLoading(false);           // ✅ NEW: stop shimmer
+    setLoading(false);
   }
 });
 
@@ -186,7 +198,18 @@ window.addEventListener("DOMContentLoaded", () => {
   form.dispatchEvent(new Event("submit"));
 });
 
-// Also re-fetch when the user toggles units (if there’s a city present)
+// Optional: auto-use geolocation on load if already granted (no prompt)
+if (navigator.permissions && navigator.permissions.query) {
+  try {
+    navigator.permissions.query({ name: "geolocation" }).then((res) => {
+      if (res.state === "granted") {
+        document.getElementById("useLocationBtn")?.click();
+      }
+    });
+  } catch {}
+}
+
+// Re-fetch when the user toggles units (if there’s a city present)
 useFEl?.addEventListener("change", () => {
   if ((input.value || "").trim()) {
     form.dispatchEvent(new Event("submit"));

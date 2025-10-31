@@ -17,6 +17,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   transition: background .6s, color .6s;
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .container {
   max-width: 720px;
@@ -142,7 +153,7 @@ h1 { margin: 0 0 16px; color: var(--accent); }
 
 
 @media (min-width: 480px) {
-  #search-form { grid-template-columns: 1fr auto auto; }
+  #search-form { grid-template-columns: 1fr auto auto auto; }
   .unit-toggle, .switch { grid-column: auto; margin-left: 8px; }
   #weather-icon { font-size: 68px; }
 }
@@ -232,3 +243,163 @@ body.embed.theme-snow,
 body.embed.theme-fog { 
   --bg: transparent;         /* don’t tint parent card */
 }
+
+/* Form text visibility tweaks */
+#search-form input,
+#search-form label,
+.unit-toggle span {
+  color: #1f2937; /* Dark gray, good contrast */
+}
+
+#search-form input::placeholder {
+  color: #6b7280; /* Muted gray for hint text */
+}
+
+.unit-toggle span {
+  color: color-mix(in srgb, var(--accent) 25%, #1f2937);
+  font-weight: 500;
+}
+/* Weather info readability improvements */
+.weather-info h2#city-name {
+  color: #111827; /* deep gray, high contrast */
+  font-weight: 600;
+}
+
+body.embed #search-form input[type="search"] {
+  color: #111827; /* deep gray-blue, high contrast */
+  background: #ffffff; /* clean white background */
+  border-color: #d1d5db; /* slightly darker border for definition */
+}
+
+body.embed #search-form input::placeholder {
+  color: #374151; /* readable medium gray */
+}
+
+/* Improve visibility of search text and placeholder */
+#search-form input[type="search"] {
+  color: #0b0b0b; /* true black for better contrast */
+  font-weight: 500; /* slightly bolder for legibility */
+}
+
+#search-form input::placeholder {
+  color: #4b5563; /* darker muted gray (vs previous #6b7280) */
+  opacity: 1; /* ensure not too faint */
+}
+
+#temperature {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.meta,
+#result small,
+#result time {
+  color: #374151; /* mid-gray, readable but subtle */
+  opacity: 0.9;
+}
+/* Force high-contrast for city + temperature inside the card */
+.weather-card .weather-info #city-name {
+  color: #111827 !important;   /* deep gray */
+  font-weight: 700;
+}
+
+.weather-card #temperature {
+  color: #1f2937 !important;   /* dark gray */
+  font-weight: 600;
+}
+
+/* The "Updated HH:MM" line is #status-line (not <time>) */
+#status-line {
+  color: #374151 !important;   /* readable mid gray */
+  opacity: 1 !important;
+  font-weight: 500;
+}
+
+
+/* Dark summary pill */
+.wx-chip {
+  background: #0f172a;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+/* Ensure white text/icons inside the pill */
+.wx-chip h2,
+.wx-chip #temperature,
+.wx-chip #wind,
+.wx-chip #wind * {
+  color: #fff !important;
+}
+
+/* Force the dark pill + white text */
+.weather-card .wx-chip {
+  background: #0f172a !important;
+  color: #fff !important;
+  border-radius: 12px;
+  padding: 12px !important;
+}
+
+.weather-card .wx-chip h2,
+.weather-card .wx-chip #temperature,
+.weather-card .wx-chip #wind,
+.weather-card .wx-chip #wind * {
+  color: #fff !important;
+}
+/* Ensure white text inside the dark pill (overrides earlier ID rules) */
+.weather-card .wx-chip #city-name { 
+  color: #fff !important; 
+}
+
+.weather-card .wx-chip #temperature { 
+  color: #fff !important; 
+}
+
+.weather-card .wx-chip #wind,
+.weather-card .wx-chip #wind * { 
+  color: #fff !important; 
+}
+
+/* Clear focus states */
+#search-form input:focus-visible,
+#search-form button:focus-visible,
+.unit-toggle input:focus-visible + span,
+.switch .track:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Improve button active/hover */
+#search-form button:hover { filter: brightness(0.96); }
+#search-form button:active { transform: translateY(1px); }
+
+#search-form input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Inline error/status styles */
+#status-line {
+  margin-top: 8px;
+  font-size: .9rem;
+  color: #374151;
+}
+#status-line.error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+/* Secondary button style for "Use my location" */
+#useLocationBtn {
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111827;
+  font-weight: 600;
+  cursor: pointer;
+}
+#useLocationBtn:hover { background: #f9fafb; }
+#useLocationBtn:active { transform: translateY(1px); }

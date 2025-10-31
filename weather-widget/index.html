@@ -23,7 +23,7 @@
      referrerpolicy="no-referrer"   
      />
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2" />
 </head>
 
 <body>
@@ -31,6 +31,7 @@
         <h1>Weather App</h1>
         
         <form id="search-form">
+            <label for="query" class="sr-only">City</label>
             <input id="query" 
                    type="search" 
                    placeholder="Enter a city (e.g. New York City)" 
@@ -40,8 +41,13 @@
                    enterkeyhint="search"
             />
             <button type="submit">Get Weather</button>
+            <button type="button" id="useLocationBtn" aria-label="Use my current location">
+             Use my location
+            </button>
+
             <label class="unit-toggle" style="margin-left:.75rem; font-size:.95rem;">
             <input id="useF" type="checkbox" />
+            
 
             <span>Show °F / mph</span>
         </label>
@@ -52,11 +58,14 @@
             <div id="weather-display" class="weather-card">
                 <i id="weather-icon" class="wi"></i>
                 <div class="weather-info">
-                    <h2 id="city-name"></h2>
-                    <p id="temperature"></p>
-                    <div id="wind">
-                        <i id="wind-icon" class="wi wi-wind"></i>
-                        <span id="wind-speed"></span>
+                    <div class="wx-chip">
+                        <h2 id="city-name"></h2>
+                        <p id="temperature"></p>
+                        <div id="wind">
+                            <i id="wind-icon" class="wi wi-wind"></i>
+                            <span id="wind-speed"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
